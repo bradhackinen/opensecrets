@@ -1,8 +1,9 @@
-import os
+from pathlib import Path
 import pandas as pd
 import numpy as np
 
-from openSecrets.dirs import *
+from openSecrets.config import dataDir
+path = Path(dataDir) / 'lobbying'
 
 filesAndHeaders = {
                 'filings':('lob_lobbying.txt',['filing_id','registrant_raw','registrant','is_firm','client_raw','client','ult_org','amount','catcode','source','self','include_nsfs','use','ind','year','type','type_long','affiliate']),
@@ -20,7 +21,7 @@ def loadDF(table):
 
     f,headers = filesAndHeaders[table]
 
-    df = pd.read_csv(os.path.join(lobbyingDataDir,f),quotechar='|',names=headers,index_col=False,header=None,encoding='mbcs')
+    df = pd.read_csv(path/f,quotechar='|',names=headers,index_col=False,header=None,encoding='ISO-8859-1',low_memory=False)
 
     if table == 'filings':
         df = formatFilingsDF(df)
@@ -31,7 +32,7 @@ def loadDF(table):
 def formatFilingsDF(df):
 
     #Create indicator for whether each filing should be used in when calculating total amounts
-    df['include_in_total'] = (df['use'] == 'y') & (df['ind'] == 'y') # & (df['self'] != 'b')
+    df['include_in_total'] = (df['use'] == 'y') & (df['ind'] == 'y')
 
     # Add date ranges to filings
     dateRangesByType = {'m':('01-01','06-30'),'e':('07-01','12-31'),'q1':('01-01','03-31'),'q2':('04-01','06-30'),'q3':('07-01','09-30'),'q4':('10-01','12-31')}
@@ -48,17 +49,11 @@ def formatFilingsDF(df):
     df.loc[df['year']<2008,'min_amount'] = 10000
     df.loc[df['year']>=2008,'min_amount'] = 5000
 
-    # #Compute adusted amount which:
-    # # 1. Replaces zeroes with half the minimum reportable amount
-    # df['adjusted_amount'] = df['amount']
-    # df.loc[df['amount']==0,'adjusted_amount'] = 0.5*df['min_amount']
-
     return df
 
 
 def compileCSVFiles(saveDir):
     for table in filesAndHeaders.keys() + ['categories']:
-##    for table in['issues']:
 
         print('\nloading',table)
         df = loadDF(table)

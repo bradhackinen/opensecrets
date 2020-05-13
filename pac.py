@@ -1,8 +1,10 @@
-import os
+from pathlib import Path
 import pandas as pd
 import numpy as np
 
-from openSecrets.dirs import *
+from openSecrets.config import dataDir
+
+path = Path(dataDir) / '527'
 
 filesAndHeaders = {
                 'committees':('cmtes527.txt',['cycle','reporting_period','ein','name','affiliate','ult_org','recipient_code','pac_id','candidate_id','ecc_committee_id','party','primary_code','primary_code_source','filing_freq','type','type_source','ideology','comments','state']),
@@ -14,6 +16,6 @@ filesAndHeaders = {
 def loadDF(table):
     f,headers = filesAndHeaders[table]
 
-    df = pd.read_csv(os.path.join(pacCommitteesDataDir,f),quotechar='|',names=headers,index_col=False,header=None,encoding='mbcs')
+    df = pd.read_csv(path/f,quotechar='|',names=headers,index_col=False,header=None,encoding='ISO-8859-1',low_memory=False)
 
     return df
