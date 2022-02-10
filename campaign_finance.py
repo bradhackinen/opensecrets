@@ -2,7 +2,7 @@ from pathlib import Path
 import glob
 import pandas as pd
 
-from openSecrets.config import data_dir
+from opensecrets.config import data_dir
 
 path = Path(data_dir) / 'campaignFinance'
 

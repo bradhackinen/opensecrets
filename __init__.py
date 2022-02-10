@@ -2,7 +2,7 @@ import os
 import time
 import glob
 
-from openSecrets import lobbying, pac, campaign_finance, reference
+from opensecrets import lobbying, pac, campaign_finance, reference
 
 loaders = {m.__name__.split('.')[-1]:m for m in [lobbying,pac,campaign_finance,reference]}
 
