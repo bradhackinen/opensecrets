@@ -1,13 +1,16 @@
-import os, time, glob
-from openSecrets import lobbying, pac, campaignFinance, reference
+import os
+import time
+import glob
 
-loaders = {m.__name__.split('.')[-1]:m for m in [lobbying,pac,campaignFinance,reference]}
+from openSecrets import lobbying, pac, campaign_finance, reference
+
+loaders = {m.__name__.split('.')[-1]:m for m in [lobbying,pac,campaign_finance,reference]}
 
 
-def listTables():
+def list_tables():
     tables = []
     for loader_name,loader in loaders.items():
-        for table_name,(filename,columns) in loader.filesAndHeaders.items():
+        for table_name,(filename,columns) in loader.files_and_headers.items():
             info = {'table':'.'.join([loader_name,table_name]),'status':'not found','files':[]}
 
             # if loader_name == 'campaignFinance':
@@ -25,22 +28,16 @@ def listTables():
     return tables
 
 
-
-def load(table,**args):
+def load_df(table,**args):
     loader_name,table_name = table.split('.')
 
     loader = loaders[loader_name]
 
-    return loader.loadDF(table_name,**args)
-
-
-# Create wrapper with old-style args for backwards compatibility
-def loadDF(category,table,**args):
-    return load(category + '.' + table,**args)
+    return loader.load_df(table_name,**args)
 
 
 if __name__ == '__main__':
-    for table in listTables():
+    for table in list_tables():
         print(f"\n{table['table']}")
         print(f"\tExpected location:\n\t\t{table['path']}")
         if table['files']:
@@ -50,10 +47,11 @@ if __name__ == '__main__':
                 print(f"\t\t{file}\tmodified: {modified}")
 
             try:
-                df = loadDF(table['table'])
+                df = load_df(table['table'])
                 print(f'\tLoaded successfully ({len(df.columns)} columns, {len(df)} rows)')
-            except:
-                print('Loading failed')
+
+            except Exception as e:
+                print(f'Loading failed with error: {e}')
                 break
 
         else:
