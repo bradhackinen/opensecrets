@@ -4,7 +4,7 @@ import pandas as pd
 
 from opensecrets.config import data_dir
 
-path = Path(data_dir) / 'campaignFinance'
+path = Path(data_dir) / 'campaign_finance'
 
 files_and_headers = {
                     'candidates':('CampaignFin*/cands*.txt',
@@ -107,7 +107,7 @@ files_and_headers = {
                     }
 
 
-def load_df(table,cycles=None):
+def load_df(table,cycles=None,fields=None):
     filename,headers = files_and_headers[table]
     filepath = str(path/filename)
 
@@ -116,10 +116,14 @@ def load_df(table,cycles=None):
         for cycle in cycles:
             yy = str(cycle)[:-2]
             df = pd.read_csv(filepath.replace('*',yy),quotechar='|',names=headers,index_col=False,header=None,encoding='ISO-8859-1',low_memory=False)
+            if fields is not None:
+                df = df[fields]
             cycle_dfs.append(df)
     else:
         for f in glob.glob(filepath):
             df = pd.read_csv(f,quotechar='|',names=headers,index_col=False,header=None,encoding='ISO-8859-1',low_memory=False)
+            if fields is not None:
+                df = df[fields]
             cycle_dfs.append(df)
 
     df = pd.concat(cycle_dfs)
