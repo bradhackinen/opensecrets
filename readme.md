@@ -1,6 +1,6 @@
-# opensecrets loader
+# OpenSecrets Loader
 
-### A little tool for loading bulk data from Open Secrets
+### A little tool for loading bulk data from OpenSecrets
 
 
 ## Setup
@@ -29,13 +29,18 @@ lobbing_df = opensecrets.load_df('lobbying.filings')
 pac_donations_df = opensecrets.load_df('campaign_finance.pac_to_pac',cycles=[2016,2018])
 
 ```
+
+
 **Special options**
+
 Because the campaign finance data is so large, the loader for this data allows two additional arguments:
 
 - `cycles` which takes a list of cycles you would like to load
 - `fields` which takes a list of field names to load, in case you don't need all the variables
 
+
 **Naming**
+
 For better or worse, I have renamed some tables and columns in ways that made more sense to me. The full list of column names can be seen in the `files_and_headers` dictionary in each loader file (`lobbying.py`,`campaign_finance.py`, and `pac.py` for the 527 tables)
 
 ### Tables
