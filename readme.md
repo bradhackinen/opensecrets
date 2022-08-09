@@ -19,17 +19,6 @@
 
 The main function is `opensecrets.load_df`, which loads a single table as a Pandas dataframe (concatenating all years or cycles by default). The first argument to `load_df` is a two-part string describing the table (see table list below). For example, `load_df('lobbying.filings')` loads the lobbying filings table, and `load_df('lobbying.lobbyists')` loads the lobbyists table.
 
-```{python}
-import opensecrets
-
-# Load lobbying filings
-lobbing_df = opensecrets.load_df('lobbying.filings')
-
-# Load PAC-to-PAC donations for the 2016 and 2018 cycles
-pac_donations_df = opensecrets.load_df('campaign_finance.pac_to_pac',cycles=[2016,2018])
-
-```
-
 
 **Special options**
 
@@ -43,10 +32,25 @@ Because the campaign finance data is so large, the loader for this data allows t
 
 For better or worse, I have renamed some tables and columns in ways that made more sense to me. The full list of column names can be seen in the `files_and_headers` dictionary in each loader file (`lobbying.py`,`campaign_finance.py`, and `pac.py` for the 527 tables)
 
+**Example usage**
+
+```{python}
+import opensecrets
+
+# Load lobbying filings
+lobbing_df = opensecrets.load_df('lobbying.filings')
+
+# Load PAC-to-PAC donations for the 2016 and 2018 cycles
+pac_donations_df = opensecrets.load_df('campaign_finance.pac_to_pac',cycles=[2016,2018])
+
+```
+
+
+
 ### Tables
 
 **Lobbying**
-| `load_df()` argument | open secrets file |
+| `load_df()` argument | OpenSecrets file |
 |-------|-------|
 | `'lobbying.filings'`            | lob_lobbying.txt |
 | `'lobbying.issues'`             | lob_issue.txt |
@@ -57,7 +61,7 @@ For better or worse, I have renamed some tables and columns in ways that made mo
 | `'lobbying.report_types'`       | lob_rpt.txt |
 
 **Campaign Finance**
-| `load_df()` argument | open secrets file |
+| `load_df()` argument | OpenSecrets file |
 |-------|-------|
 | `'campaign_finance.candidates'` | CampaignFin*/cands*.txt |
 | `'campaign_finance.committees'` | CampaignFin*/cmtes*.txt.txt |
@@ -66,13 +70,13 @@ For better or worse, I have renamed some tables and columns in ways that made mo
 | `'campaign_finance.pac_to_pac'` | CampaignFin*/pac_other*.txt |
 
 **527**
-| `load_df()` argument | open secrets file |
+| `load_df()` argument | OpenSecrets file |
 |-------|-------|
 | `'527.committees'`      | cmtes527.txt |
 | `'527.expenditures'`    | expends527.txt |
 | `'527.receipts'`        | rcpts527.txt |
 
 **Reference**
-| `load_df()` argument | open secrets file |
+| `load_df()` argument | OpenSecrets file |
 |-------|-------|
 | `'reference.categories'`      | CRP_Categories.txt |
