@@ -115,15 +115,3 @@ def format_filings_df(df):
     df.loc[df['year'] >= 2008,'min_amount'] = 5000
 
     return df
-
-
-def compileCSVFiles(save_dir):
-    for table in files_and_headers.keys() + ['categories']:
-
-        print('\nloading',table)
-        df = loadDF(table)
-
-        saveFile = os.path.join(save_dir,table+'.csv')
-
-        print('Saving',saveFile)
-        df.to_csv(saveFile,index=False)
