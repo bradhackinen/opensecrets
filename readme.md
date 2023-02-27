@@ -10,7 +10,7 @@
 3. Download bulk data files from https://www.opensecrets.org/bulk-data
 
     - Lobbying bulk files should unzipped be placed in `data_dir/lobbying`
-    - Campaign finance bulk files for each cycle should unzipped be placed in `data_dir/CampaignFin{cycle}`
+    - Campaign finance bulk files for each cycle should unzipped be placed in `data_dir/campaign_finance/CampaignFin{cycle}`
     - 527 files should be placed in `data_dir/527`
 4. Run `opensecrets._loader_test.py` to verify that the files can be found
 
